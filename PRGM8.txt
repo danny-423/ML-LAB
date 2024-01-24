@@ -1,0 +1,18 @@
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import confusion_matrix
+col=['Age','Gender','FamilyHist','Diet','LifeStlye','Cholestrol','Heartdisease']
+data=pd.read_csv('pro8.csv',names=col)
+print(data)
+encoder = LabelEncoder()
+for i in range(len(col)):
+    data.iloc[:,i] = encoder.fit_transform(data.iloc[:,i]) 
+X=data.iloc[:,0:6]
+y=data.iloc[:,-1]
+X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.2)
+clf = GaussianNB()
+clf.fit(X_train,y_train)
+y_pred = clf.predict(X_test)
+print('confusion matrix ',confusion_matrix(y_test,y_pred))
